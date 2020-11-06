@@ -84,7 +84,7 @@ $ cmake --install .
 There are several build options that can be supplied to `CMake`:
 
  * **USE_OPENMP**: Flag which determines whether `OpenMP` should be used to parallelize some calculations. Default value `ON`.
- * **CMAKE_BUILD_TYPE**: Determines whether `SeAN` is built in the `RELEASE` (default), `DEBUG`, or `RELWITHDEBUGINFO` mode. To see which compiler flags are set by which option have a look at the `CMakeLists.txt` file.
+ * **CMAKE_BUILD_TYPE**: Determines whether `SeAN` is built in the `RelWithDebInfo` (default), `Debug`, `Release` or `MinSizeRel` mode.
 
 ### 3. Usage <a name="usage"></a>
 
