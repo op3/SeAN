@@ -427,10 +427,10 @@ void Target::calculateIncidentBeam(const vector<double> &energy_bins){
 	}
 };
 
-void Target::calculateIncidentBeam(const vector< vector<double> > &photon_flux_density_histogram){
+void Target::calculateIncidentBeam(const vector< vector<double> > &photon_flux_density_histogram_){
 
 	for(unsigned int i = 0; i < settings.nbins_e; ++i){
-		incident_beam_histogram[i] = photon_flux_density_histogram[settings.nbins_z - 1][i];
+		incident_beam_histogram[i] = photon_flux_density_histogram_[settings.nbins_z - 1][i];
 	}
 }
 

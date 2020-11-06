@@ -34,7 +34,7 @@ double Integrator::trapezoidal_rule(const vector<double> &bins, const vector<dou
 	double integral = 0.;
 
 	#pragma omp parallel for reduction (+:integral)
-	for(unsigned int i = 0; i < bins.size() - 1; ++i){
+	for(size_t i = 0; i < bins.size() - 1; ++i){
 		integral += (histogram[i] + histogram[i+1]);
 	}
 
@@ -54,20 +54,20 @@ double Integrator::trapezoidal_rule2D(const vector<double> &bins1, const vector<
 
 	// Sum over y = 0 and y = (bins2.size()-1) axis
 	#pragma omp parallel for reduction (+:integral_sides)
-	for(unsigned int i = 1; i < bins1.size() - 1; ++i){
+	for(size_t i = 1; i < bins1.size() - 1; ++i){
 		integral_sides += histogram[i][0             ] +
 				  histogram[i][bins2.size()-1];
 	}
 	// Sum over x = 0 and x = (bins1.size()-1) axis
 	#pragma omp parallel for reduction (+:integral_sides)
-	for(unsigned int i = 1; i < bins2.size() - 1; ++i){
+	for(size_t i = 1; i < bins2.size() - 1; ++i){
 		integral_sides += histogram[0             ][i] +
 				  histogram[bins1.size()-1][i];
 	}
 
 	// Sum over inner area
 	#pragma omp parallel for reduction (+:integral_inside)
-	for(unsigned int i = 1; i < bins1.size() - 1; ++i){
+	for(size_t i = 1; i < bins1.size() - 1; ++i){
 		for(unsigned int j = 1; j < bins2.size() - 1; ++j){
 			integral_inside += histogram[i][j];
 		}
@@ -94,25 +94,25 @@ double Integrator::simpsons_rule2D(const vector<double> &bins1, const vector<dou
 	// Sum over sides
 	// Sum over even bins on y = 0 and y = (bins2.size()-1) axis
 	#pragma omp parallel for reduction (+:integral_value_2_sides)
-	for(unsigned int i = 2; i < bins1.size() - 1; i += 2){
+	for(size_t i = 2; i < bins1.size() - 1; i += 2){
 		integral_value_2_sides += histogram[i][0             ] +
 				  		histogram[i][bins2.size()-1];
 	}
 	// Sum over odd bins on y = 0 and y = (bins2.size()-1) axis
 	#pragma omp parallel for reduction (+:integral_value_4_sides)
-	for(unsigned int i = 1; i < bins1.size() - 2; i += 2){
+	for(size_t i = 1; i < bins1.size() - 2; i += 2){
 		integral_value_4_sides += histogram[i][0             ] +
 				  		histogram[i][bins2.size()-1];
 	}
 	// Sum over even bins on x = 0 and x = (bins2.size()-1) axis
 	#pragma omp parallel for reduction (+:integral_value_2_sides)
-	for(unsigned int i = 2; i < bins2.size() - 1; i += 2){
+	for(size_t i = 2; i < bins2.size() - 1; i += 2){
 		integral_value_2_sides += histogram[0             ][i] +
 				  		histogram[bins1.size()-1][i];
 	}
 	// Sum over odd bins on x = 0 and x = (bins2.size()-1) axis
 	#pragma omp parallel for reduction (+:integral_value_4_sides)
-	for(unsigned int i = 1; i < bins2.size() - 2; i += 2){
+	for(size_t i = 1; i < bins2.size() - 2; i += 2){
 		integral_value_4_sides += histogram[0             ][i] +
 						histogram[bins1.size()-1][i];
 	}
@@ -120,21 +120,21 @@ double Integrator::simpsons_rule2D(const vector<double> &bins1, const vector<dou
 	// Sum over inner area
 	// Sum over inner even-even bins
 	#pragma omp parallel for reduction (+:integral_value_4_area)
-	for(unsigned int i = 2; i < bins1.size()-1; i +=2){
+	for(size_t i = 2; i < bins1.size()-1; i +=2){
 		for(unsigned int j = 2; j < bins2.size()-1; j +=2){
 			integral_value_4_area += histogram[i][j];
 		}
 	}
 	// Sum over inner odd-odd bins
 	#pragma omp parallel for reduction (+:integral_value_16_area)
-	for(unsigned int i = 1; i < bins1.size()-2; i +=2){
+	for(size_t i = 1; i < bins1.size()-2; i +=2){
 		for(unsigned int j = 1; j < bins2.size()-2; j +=2){
 			integral_value_16_area += histogram[i][j];
 		}
 	}
 	// Sum over inner odd-even bins
 	#pragma omp parallel for reduction (+:integral_value_8_area)
-	for(unsigned int i = 1; i < bins1.size()-2; i +=2){
+	for(size_t i = 1; i < bins1.size()-2; i +=2){
 		for(unsigned int j = 2; j < bins2.size()-1; j +=2){
 			integral_value_8_area += histogram[i][j] + histogram[i+1][j-1];
 		}
@@ -152,10 +152,10 @@ pair<double, double> Integrator::darboux(const vector<double> &bins, const vecto
 
 	double lower_sum = 0.;
 	double upper_sum = 0.;
-	pair<double, double> mima;
+	//pair<double, double> mima;
 
 	#pragma omp parallel for reduction(+:lower_sum) reduction(+:upper_sum)
-	for(unsigned int i = 0; i < bins.size() - 1; ++i){
+	for(size_t i = 0; i < bins.size() - 1; ++i){
 		// Taking the minimum and the maximum of the same pair of values seems
 		// inefficient. In fact, there is the function std::minmax which evaluates
 		// both minimum and maximum value at the same time, but this did not work
@@ -176,7 +176,7 @@ pair<double, double> Integrator::darboux2D(const vector<double> &bins1, const ve
 	double upper_sum = 0.;
 
 	#pragma omp parallel for reduction (+:lower_sum) reduction (+:upper_sum)
-	for(unsigned int i = 0; i < bins1.size() - 1; ++i){
+	for(size_t i = 0; i < bins1.size() - 1; ++i){
 		for(unsigned int j = 0; j < bins2.size() - 1; ++j){
 			lower_sum += min(min(histogram[i  ][j  ], histogram[i  ][j+1]),
 					 min(histogram[i+1][j  ], histogram[i+1][j+1]));

@@ -94,9 +94,9 @@ void Plotter::plotMultiple1DHistogramsAndSum(const vector<double> &bins, const v
 	graph->Draw();
 	
 	for(unsigned int i = 0; i < histograms.size(); ++i){
-		TGraph *graph = new TGraph((int) bins.size(), &bins[0], &histograms[i][0]);
-		graph->SetLineStyle(2);
-		graph->Draw("same");
+		TGraph *graph2 = new TGraph((int) bins.size(), &bins[0], &histograms[i][0]);
+		graph2->SetLineStyle(2);
+		graph2->Draw("same");
 	}
 
 	canvas->SaveAs(filename.str().c_str());
