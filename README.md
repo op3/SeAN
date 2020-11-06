@@ -59,9 +59,9 @@ $ git clone https://github.com/uga-uga/SeAN.git
 Enter the newly created directory `sean/` and execute
 
 ```
-$ cd sean/
-$ cmake .
-$ make
+$ mkdir build && cd build
+$ cmake ..
+$ cmake --build .
 ```
 
 This should create a `sean` executable which is ready to run. Test it by executing 
@@ -73,26 +73,17 @@ SeAN, Self-Absorption Numerical
 [...]
 ```
 
-To remove all files which are created during the compilation, including the executable, type
+You can install SeAN in the system using
 
 ```
-$ make clean
+$ cmake --install .
 ```
-
-In addition, to install `SeAN` in the system, type
-
-```
-$ make install
-```
-
-after the installation steps above. If correctly installed, it should be possible to execute `sean` in any directory.
 
 #### 2.3 Build options <a name="build_options"></a>
 
 There are several build options that can be supplied to `CMake`:
 
  * **USE_OPENMP**: Flag which determines whether `OpenMP` should be used to parallelize some calculations. Default value `ON`.
- * **FFTW3_DIR**: Indicates the directory in which `FFTW3Config.cmake` can be found. Unfortunately, `fftw3` does not supply a `FindFFTW3.cmake` file to be used with the `find_package()` method of `CMake`, so it might be necessary to set this path manually.
  * **CMAKE_BUILD_TYPE**: Determines whether `SeAN` is built in the `RELEASE` (default), `DEBUG`, or `RELWITHDEBUGINFO` mode. To see which compiler flags are set by which option have a look at the `CMakeLists.txt` file.
 
 ### 3. Usage <a name="usage"></a>

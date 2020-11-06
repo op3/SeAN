@@ -1,6 +1,8 @@
 cmake_minimum_required (VERSION 3.9 FATAL_ERROR)
 project (sean)
 
+set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} "${PROJECT_SOURCE_DIR}/cmake")
+
 add_subdirectory("src/")
 include_directories("include/")
 
